@@ -1,0 +1,22 @@
+# Explanation: We will take a map numsMap. numsMap will contain 
+# the number and its index. Now as we go thourgh the list,
+# for every nummber if target-num is present in numsMap that means 
+# that these two numbers add up to target. So, we return their indexes.
+# If this is not the case then we add current number and its index 
+# in the numsMap. 
+# Given that there can only be one solution, we dont have to worry
+# about duplicates. 
+
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        numsMap = {}
+        for i in range(len(nums)):
+            secondNum = target-nums[i] #nums[i] is the first number
+            if secondNum in numsMap:
+                return [numsMap[secondNum], i]
+            numsMap[nums[i]] = i  
+            
+                    
+        
+        
+        
