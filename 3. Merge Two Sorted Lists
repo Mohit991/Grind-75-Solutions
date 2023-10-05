@@ -1,0 +1,39 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+# First we create a dummy node which will be at the beginning of the list
+# For most of the LL problems it is good practice to add a dummy node.
+# With this we can avoid a lot of checks. 
+
+# We will go through both the lists and continue as long as both the 
+# lists are non empty. We will take the smaller node from either list
+# Change the pointers to include it and move ahead. 
+
+# At the end if either of the lists are non empty, we simply add it to 
+# the end of the list. 
+
+class Solution:
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+        dummy = ListNode()
+        newHead = dummy
+        temp = newHead
+         
+        while list1 and list2:
+            if list1.val < list2.val:
+                temp.next = list1
+                temp = temp.next
+                list1 = list1.next
+            else:
+                temp.next = list2
+                temp = temp.next
+                list2 = list2.next
+        
+        if list1:
+            temp.next = list1
+        if list2:
+            temp.next = list2
+        
+        return newHead.next
