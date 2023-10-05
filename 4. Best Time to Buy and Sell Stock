@@ -1,0 +1,15 @@
+#To find the max profit we can get, we will try to get the min price we
+# have seen so far and use todays price as the selling price. 
+# When we do todaysPrice-minPriceTillNow we will get the best deal for 
+# today. To find the best deal for all the days, we will use:
+# maxProfit = max(maxProfit, todaysPrice-minPriceTillNow)
+# This will maximize the profit. 
+
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        minPriceTillNow = prices[0]
+        maxProfit = 0
+        for todaysPrice in prices:
+            maxProfit = max(maxProfit, todaysPrice-minPriceTillNow)
+            minPriceTillNow = min(minPriceTillNow, todaysPrice)
+        return maxProfit
