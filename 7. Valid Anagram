@@ -1,0 +1,52 @@
+# One simple way is to just use a letterCount map and count each letter. 
+# After that we will simply check if the other word have the same count or not. 
+
+class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+        if len(s) != len(t):
+            return False
+        
+        lettersCount = {}
+        for letter in s:
+            if letter in lettersCount:
+                lettersCount[letter] += 1
+            else:
+                lettersCount[letter] = 1
+        
+        for letter in t:
+            if letter not in lettersCount or lettersCount[letter] == 0:
+                return False
+            else:
+                lettersCount[letter] -= 1
+        return True
+        
+        
+# Another Solution is to just return true if both words are same after sorting
+# Else False. 
+class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+        return sorted(s) == sorted(t)
+        
+        
+# Or we can take an array of 26, one slot for one letter. 
+# For each char of first string, we increment its freq by 1
+# For each char of first string, we decrement its freq by 1
+# At the end, if the whole array ie all slots are zero, they are anagrams els
+# not
+
+class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+        if len(s) != len(t):
+            return False
+        
+        letters = [0] * 26
+        for i in range(len(s)):
+            letters[ord('a') - ord(s[i])] += 1
+            letters[ord('a') - ord(t[i])] -= 1
+        
+        for i in range(26):
+            if letters[i] != 0:
+                return False
+        return True
+            
+
