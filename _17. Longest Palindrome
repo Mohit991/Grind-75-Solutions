@@ -1,0 +1,21 @@
+#Problem: https://leetcode.com/problems/longest-palindrome/
+class Solution:
+    def longestPalindrome(self, s: str) -> int:
+        letterFrequency = {}
+        for letter in s:
+            if letter in letterFrequency:
+                letterFrequency[letter] += 1
+            else:
+                letterFrequency[letter] = 1
+        
+        oddLetterPresent = False
+        longestPalindLength = 0
+        
+        for letter in letterFrequency:
+            if letterFrequency[letter]%2 == 1:
+                oddLetterPresent = True
+                longestPalindLength += letterFrequency[letter] - 1
+            else:
+                longestPalindLength += letterFrequency[letter]
+        
+        return longestPalindLength+1 if oddLetterPresent else longestPalindLength
