@@ -1,0 +1,52 @@
+# Explanation: First we create an array leftProduct. For every element in
+# the array, we will put
+# product of all the elements to its left in this leftProduct. 
+# Same with rightProduct, For every element in the array, we will put
+# product of all the elements to its right in this rightProduct. 
+# We will multiply both of these arrays and return that ans. 
+
+class Solution:
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        N = len(nums)
+        leftProduct = [1]
+        for i in range(1, N):
+            leftProduct.append(leftProduct[-1]*nums[i-1])
+        
+        rightProduct = [1]
+        for i in range(N-2, -1, -1):
+            rightProduct.append(rightProduct[-1]*nums[i+1])
+        rightProduct.reverse()
+        
+        ans = []
+        for i in range(N):
+            ans.append(rightProduct[i]*leftProduct[i])
+            
+        return ans
+
+######################################################################
+
+class Solution:
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        #Create array answer, find the left product of each index in this array.
+        #Now take a rightProduct value and use the original array nums to find the right product for each
+        #index on the go. Multiply this right product with value in the answer(which is left product)
+        #finally answer will have correct values. 
+        #TC - O(n), SC - O(1)
+        
+        answer = []
+        
+        leftProduct = 1
+        answer.append(1)
+        
+        #Find the left product for each index
+        for i in range(len(nums)-1):
+            leftProduct *= nums[i]
+            answer.append(leftProduct)
+        
+        rightProduct = 1
+        #Find right product on the go and multiply it with the answer and get the correct values. 
+        for i in range(len(nums)-1, -1, -1):
+            answer[i] *= rightProduct
+            rightProduct *= nums[i]
+            
+        return answer 
