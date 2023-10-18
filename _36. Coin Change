@@ -1,0 +1,40 @@
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        coinsForAmt = [inf]*(amount+1)
+        coinsForAmt[0] = 0 #because amount of 0 can be built from 0 coins
+
+        for currAmount in range(1, amount+1): #lets take all the amounts
+            for coin in coins:
+                if currAmount < coin: #Amount cant be built from this coin
+                    continue
+                coinsForAmt[currAmount] = min(coinsForAmt[currAmount], 1 + coinsForAmt[currAmount - coin])
+        
+        return coinsForAmt[-1] if coinsForAmt[-1] != inf else -1
+    
+###########################################################################
+
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        memo = {}
+        def findChange(index, amount):
+            if (index, amount) in memo:
+                return memo[index, amount]
+            
+            if amount == 0:
+                return 0
+            
+            if amount < 0 or index >= len(coins):
+                return inf
+            
+            takeCoin = findChange(index, amount - coins[index]) + 1
+            dontTakeCoin = findChange(index + 1, amount) + 0
+            
+            memo[index, amount] = min(takeCoin, dontTakeCoin)
+            return memo[index, amount] 
+        
+        
+        res = findChange(0, amount)
+        return res if res != math.inf else -1
+           
+            
+        
