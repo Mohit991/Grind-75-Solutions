@@ -1,0 +1,34 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+#We will traverse the tree normally. We will return true when we find p or
+#q. When we see p or q we return true. If the traversal if left and right
+#both are true then we found both left and right below then we set 
+#current node to ans. If we have seen either of p or q and we find 
+# The other one in the current node then we will set node to ans. 
+
+class Solution:
+    ans = None
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        def traverse(node):
+            if not node:
+                return False
+
+            left = traverse(node.left)
+            right = traverse(node.right)
+
+            if left and right:
+                self.ans = node
+                return False
+            if (left or right) and node in [p, q]:
+                self.ans = node
+                return False
+            if left or right or node in [p, q]:
+                return True
+            
+        traverse(root)
+        return self.ans
