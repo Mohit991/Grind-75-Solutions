@@ -1,0 +1,52 @@
+class Solution:
+    def canPartition(self, nums: List[int]) -> bool:
+        totalSum = sum(nums)
+        if totalSum & 1:
+            return False
+
+        target = totalSum // 2
+
+        memo = set()
+        def traverse(i, target):
+            if target == 0:
+                return True
+            
+            if i >= len(nums) or target < 0:
+                return False
+            
+            if (i, target) in memo:
+                return False
+
+            pick = traverse(i+1, target-nums[i])
+            dontPick = traverse(i+1, target)
+            memo.add((i, target))
+            return pick or dontPick
+        
+        return traverse(0, target)
+
+    
+############################################################
+
+class Solution:
+    def canPartition(self, nums: List[int]) -> bool:
+        totalSum = sum(nums)
+        if totalSum % 2 != 0:
+            return False
+        
+        partSum = int(totalSum / 2)
+        
+        dp = [True] + [False] * partSum
+        
+        for num in nums:
+            for target in range(partSum, -1, -1):
+                if target - num >= 0:
+                    dp[target] = dp[target] or dp[target - num]
+                
+                if dp[partSum]:
+                    return True
+        
+        return False
+            
+
+
+        
