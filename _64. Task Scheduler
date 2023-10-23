@@ -1,0 +1,48 @@
+# Explanation: https://leetcode.com/problems/task-scheduler/discuss/104504/C%2B%2B-8lines-O(n)
+# First count the number of occurrences of each element.
+# Let the max frequency seen be M for element E
+# We can schedule the first M-1 occurrences of E, each E will be followed by at least N CPU cycles in between successive schedules of E
+# Total CPU cycles after scheduling M-1 occurrences of E = (M-1) * (N + 1) // 1 comes for the CPU cycle for E itself
+# Now schedule the final round of tasks. We will need at least 1 CPU cycle of the last occurrence of E. If there are multiple tasks with frequency M, they will all need 1 more cycle.
+# Run through the frequency dictionary and for every element which has frequency == M, add 1 cycle to result.
+# If we have more number of tasks than the max slots we need as computed above we will return the length of the tasks array as we need at least those many CPU cycles.
+
+# class Solution:
+#     def leastInterval(self, tasks: List[str], n: int) -> int:
+#         FreqCount = {}
+#         for task in tasks:
+#             if task in FreqCount:
+#                 FreqCount[task] += 1
+#             else:
+#                 FreqCount[task] = 1
+#         maxFreq = max(FreqCount.values())
+#         ans = (maxFreq - 1)*(n + 1)
+#         for task, freq in FreqCount.items():
+#             if freq == maxFreq:
+#                 ans += 1
+#         return max(ans, len(tasks))
+
+
+# Explanation: https://leetcode.com/problems/task-scheduler/discuss/104500/Java-O(n)-time-O(1)-space-1-pass-no-sorting-solution-with-detailed-explanation
+
+class Solution:
+    def leastInterval(self, tasks: List[str], n: int) -> int:
+        FreqCount = {}
+        for task in tasks:
+            if task in FreqCount:
+                FreqCount[task] += 1
+            else:
+                FreqCount[task] = 1
+        maxFreq = max(FreqCount.values())
+        maxFreqTasks = 0
+        for task in FreqCount:
+            if FreqCount[task] == maxFreq:
+                maxFreqTasks += 1
+            
+        partCount = maxFreq - 1
+        partLength = n - (maxFreqTasks - 1)
+        emptySlots = partCount * partLength
+        availableTasks = len(tasks) - (maxFreq * maxFreqTasks)
+        idles = max(0, emptySlots - availableTasks)
+        
+        return len(tasks) + idles
