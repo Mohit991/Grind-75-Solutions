@@ -1,0 +1,40 @@
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        if len(s) < len(t):
+            return ''
+
+        freqOfT = {}
+        for char in t:
+            if char in freqOfT:
+                freqOfT[char] += 1
+            else:
+                freqOfT[char] = 1
+
+        left, right = 0, 0
+        minWinLen = len(s) + 1
+        minWinStart = 0
+        
+        noOfCharsLeft = len(t)
+        
+        while right < len(s):
+            if s[right] in freqOfT:
+                if freqOfT[s[right]] > 0:
+                    noOfCharsLeft -= 1
+                freqOfT[s[right]] -= 1
+            
+            while noOfCharsLeft == 0:
+                if right - left + 1 < minWinLen:
+                    minWinLen = right - left + 1
+                    minWinStart = left 
+                if s[left] in freqOfT:
+                    freqOfT[s[left]] += 1
+                    if freqOfT[s[left]] > 0:
+                        noOfCharsLeft += 1
+                left += 1
+            right += 1   
+        if minWinLen == len(s) + 1:
+            return ''
+        else:
+            return s[minWinStart: minWinStart + minWinLen]
+                
+
