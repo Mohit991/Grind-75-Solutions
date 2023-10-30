@@ -1,0 +1,57 @@
+# We can convert this problem into graph problem, specifically the problem
+# of finding the smallest path between two nodes; beginWord and endWord.
+# Step 1: Build an graph using function oneWordDifference. 
+# To do this we have to go through all the nodes for each node making
+# it n^2, also we have to go through each word for these n^2 words.
+# since each word has length m, hence total complexity is O(n^2*m)
+# Step 2: Do a BFS and find the shortest path between the two nodes ie 
+# beginWord and endWord. The complexity for that is O(n)
+# Hence total complexity is O(n^2*m) + O(n) = O(n^2*m)
+
+class Solution:
+    def oneWordDifference(self, word1, word2):
+        oneWordDiff = False
+        for i in range(len(word1)):
+            if word1[i] != word2[i]:
+                if not oneWordDiff:
+                    oneWordDiff = True
+                else:
+                    return False
+        return True
+    
+    def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
+        
+        #First we will add beginWord and all of its neighbouring nodes/words
+        #neighbouring nodes/words means all words with one char difference.
+        graph = defaultdict(list)
+        for word in wordList:
+            if self.oneWordDifference(beginWord, word):
+                graph[beginWord].append(word)
+        
+        for i in range(len(wordList)):
+            for j in range(i+1, len(wordList)):
+                if self.oneWordDifference(wordList[i], wordList[j]):
+                    graph[wordList[i]].append(wordList[j])
+                    graph[wordList[j]].append(wordList[i])
+        
+        q = [beginWord]
+        visited = set()
+        level = 1
+        while q:
+            l = len(q)
+            for i in range(l):
+                currWord = q.pop(0)
+                if currWord in visited:
+                    continue
+                visited.add(currWord)
+                
+                if currWord == endWord:
+                    return level
+                for neighbouringWord in graph[currWord]:
+                    q.append(neighbouringWord)
+            level += 1
+        return 0
+    
+            
+    
+        
